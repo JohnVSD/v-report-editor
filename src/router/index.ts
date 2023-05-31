@@ -21,7 +21,8 @@ const router = createRouter({
       name: 'MyReport',
       component: Layout,
       meta: {
-        title: '我的报表'
+        title: '我的报表',
+        showInNav: true
       },
       children: [
         {
@@ -39,12 +40,26 @@ const router = createRouter({
       name: 'ReportManage',
       component: Layout,
       meta: {
-        title: '报表管理'
+        title: '报表管理',
+        showInNav: true
       },
       children: [
         {
           path: 'list',
           name: 'ReportList',
+          meta: {
+            title: '报表管理',
+            icon: '<icon-unordered-list />'
+          },
+          component: ReportManage
+        },
+        {
+          path: 'list2',
+          name: 'ReportList2',
+          meta: {
+            title: '新增报表',
+            icon: '<icon-unordered-list />'
+          },
           component: ReportManage
         }
       ]

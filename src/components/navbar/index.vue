@@ -11,18 +11,32 @@
         </a-typography-title>
       </a-space>
     </div>
-    <div class="center-side">
-      居中菜单
-    </div>
+    <ul class="center-side">
+      <li v-for="nav in navList">
+        <router-link :to="nav.path">{{ nav.meta.title }}</router-link>
+      </li>
+    </ul>
     <div class="right-side">右侧</div>
   </section>
 </template>
 
 <script lang="ts" setup>
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const navList = computed(() => {
+  const routes = router.getRoutes()
+
+  return routes.filter(item => {
+    return item.meta && item.meta.showInNav
+  })
+})
 
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -40,7 +54,13 @@
   display: flex;
   flex: 1;
   place-items: center;
-  margin-left: 60px;
+  margin-left: 10px;
+
+  li {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
 }
 .right-side {
   display: flex;

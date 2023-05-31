@@ -1,33 +1,14 @@
 <template>
   <a-layout class="layout">
     <a-layout-header class="layout-header">
-      <Navbar />
+      <navbar />
     </a-layout-header>
     <a-layout class="inside-layout">
       <a-layout-sider collapsible breakpoint="xl">
-        <a-menu
-          :default-open-keys="['1']"
-          :default-selected-keys="['0_3']"
-          :style="{ width: '100%' }"
-          @menu-item-click="onClickMenuItem"
-        >
-          <a-menu-item key="0_1">
-            <IconHome></IconHome>
-            报表1
-          </a-menu-item>
-          <a-menu-item key="0_2">
-            <IconCalendar></IconCalendar>
-            报表2
-          </a-menu-item>
-        </a-menu>
-        <!-- trigger -->
-        <template #trigger="{ collapsed }">
-          <IconCaretRight v-if="collapsed"></IconCaretRight>
-          <IconCaretLeft v-else></IconCaretLeft>
-        </template>
+        <Menu v-if="isMyReport" />
+        <sidebar v-else ></sidebar>
       </a-layout-sider>
       <a-layout-content>
-        123
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
@@ -35,12 +16,22 @@
 </template>
 
 <script lang="ts" setup>
-import { Message} from '@arco-design/web-vue';
 import Navbar from '@/components/navbar/index.vue'
+import Sidebar from './components/sidebar.vue'
+import Menu from './components/menu.vue'
+import { useRoute } from 'vue-router';
+import { computed, watch } from 'vue';
 
-function onClickMenuItem(key: string) {
-  Message.info({ content: `You select ${key}`, showIcon: true });
-}
+const route = useRoute();
+const isMyReport = computed(() => {
+  return route.name === 'MyReport';
+})
+
+watch(isMyReport, () => {
+  console.log('路由名称：', route.name);
+  console.log('啦啦啦：', isMyReport, isMyReport.value);
+})
+
 </script>
 
 <style lang="less" scoped>

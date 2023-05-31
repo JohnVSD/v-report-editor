@@ -1,8 +1,10 @@
 import { createApp } from 'vue'
 import router from './router'
-import './style.css'
 import ArcoVue from '@arco-design/web-vue'
 import App from './App.vue'
+
+// CSS 部分
+import '@/assets/style/global.less'
 import '@arco-design/web-vue/dist/arco.css'
 
 const app = createApp(App);
