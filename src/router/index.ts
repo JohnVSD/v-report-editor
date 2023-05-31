@@ -38,26 +38,20 @@ const router = createRouter({
     {
       path: '/report-manage',
       name: 'ReportManage',
-      component: Layout,
+      // redirect: {
+      //   name: 'ReportList'
+      // },
       meta: {
         title: '报表管理',
         showInNav: true
       },
+      component: Layout,
       children: [
         {
           path: 'list',
           name: 'ReportList',
           meta: {
             title: '报表管理',
-            icon: '<icon-unordered-list />'
-          },
-          component: ReportManage
-        },
-        {
-          path: 'list2',
-          name: 'ReportList2',
-          meta: {
-            title: '新增报表',
             icon: '<icon-unordered-list />'
           },
           component: ReportManage

@@ -3,9 +3,8 @@
     :default-open-keys="['1']"
     :default-selected-keys="['0_1']"
     :style="{ width: '100%' }"
-    @menu-item-click="onClickMenuItem"
   >
-    <a-menu-item v-for="(item, index) in subMenuList" :key="`0_${index}`">
+    <a-menu-item v-for="(item, index) in subMenuList" :key="`0_${index}`" @click="goto(item)">
       {{ item?.meta?.title || '' }}
     </a-menu-item>
   </a-menu>
@@ -13,27 +12,25 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { Message} from '@arco-design/web-vue';
-// import {
-//   IconHome,
-//   IconCalendar,
-// } from '@arco-design/web-vue/es/icon';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute, RouteRecordRaw } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
-
-function onClickMenuItem(key: string) {
-  Message.info({ content: `You select ${key}`, showIcon: true });
-}
+const routes = router.getRoutes();
 
 const subMenuList = computed(() => {
   const curRoute = route.name;
-  const routes = router.getRoutes().find(item => {
+  const curRoutes = routes.find(item => {
     return item.name === curRoute
   })
-  return routes?.children || []
+  return curRoutes?.children || []
 })
+
+function goto(item: RouteRecordRaw) {
+  router.push({
+    name: item.name
+  })
+}
 </script>
 
 <style lang="less" scoped>

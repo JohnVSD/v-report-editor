@@ -1,14 +1,13 @@
 <template>
-  <div>
-    第一种 view 上下结构
-  </div>
-  <router-view></router-view>
+  <section class="container">
+    <ReportList/>
+  </section>
 </template>
 
 <script lang="ts" setup>
-
+import ReportList from "./components/report-list.vue";
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 
 </style>

@@ -8,7 +8,7 @@
         <Menu v-if="isMyReport" />
         <sidebar v-else ></sidebar>
       </a-layout-sider>
-      <a-layout-content>
+      <a-layout-content class="layout-content">
         <router-view></router-view>
       </a-layout-content>
     </a-layout>
@@ -52,5 +52,13 @@ watch(isMyReport, () => {
   z-index: 100;
   width: 100%;
   height: @nav-size-height;
+}
+
+.layout-content {
+  padding: 16px;
+  min-height: 100vh;
+  overflow-y: hidden;
+  background-color: var(--color-fill-2);
+  transition: padding 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 }
 </style>
