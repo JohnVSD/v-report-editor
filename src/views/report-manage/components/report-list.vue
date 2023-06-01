@@ -1,9 +1,7 @@
 <template>
-  <section class="container">
-    <a-card title="报表列表" :bordered="false" :style="{ width: '100%' }">
-      <a-table :columns="columns" :data="data" />
-    </a-card>
-  </section>
+  <a-card title="报表列表" :bordered="false" :style="{ width: '100%' }">
+    <a-table :columns="columns" :data="data" />
+  </a-card>
 </template>
 
 <script lang="ts" setup>

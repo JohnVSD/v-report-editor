@@ -19,10 +19,13 @@ const route = useRoute();
 const routes = router.getRoutes();
 
 const subMenuList = computed(() => {
-  const curRoute = route.name;
+  const curRoutePath = route.path;
   const curRoutes = routes.find(item => {
-    return item.name === curRoute
+    const hasChildren = item.children && item.children.length;
+
+    return hasChildren && curRoutePath.includes(item.path) && item.meta.showInNav
   })
+
   return curRoutes?.children || []
 })
 

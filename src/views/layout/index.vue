@@ -3,8 +3,8 @@
     <a-layout-header class="layout-header">
       <navbar />
     </a-layout-header>
-    <a-layout class="inside-layout">
-      <a-layout-sider collapsible breakpoint="xl">
+    <a-layout>
+      <a-layout-sider class="layout-sider" collapsible breakpoint="xl">
         <Menu v-if="isMyReport" />
         <sidebar v-else ></sidebar>
       </a-layout-sider>
@@ -20,16 +20,11 @@ import Navbar from '@/components/navbar/index.vue'
 import Sidebar from './components/sidebar.vue'
 import Menu from './components/menu.vue'
 import { useRoute } from 'vue-router';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 
 const route = useRoute();
 const isMyReport = computed(() => {
   return route.name === 'MyReport';
-})
-
-watch(isMyReport, () => {
-  console.log('路由名称：', route.name);
-  console.log('啦啦啦：', isMyReport, isMyReport.value);
 })
 
 </script>
@@ -41,9 +36,6 @@ watch(isMyReport, () => {
   width: 100%;
   height: 100%;
 }
-.inside-layout {
-  padding-top: @nav-size-height;
-}
 
 .layout-header {
   position: fixed;
@@ -54,8 +46,20 @@ watch(isMyReport, () => {
   height: @nav-size-height;
 }
 
+.layout-sider {
+  padding-top: @nav-size-height;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  height: 100%;
+  transition: all .2s cubic-bezier(.34,.69,.1,1);
+}
+
 .layout-content {
-  padding: 16px;
+  padding-top: 76px;
+  padding-left: 220px;
+  padding-right: 16px;
   min-height: 100vh;
   overflow-y: hidden;
   background-color: var(--color-fill-2);

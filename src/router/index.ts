@@ -38,9 +38,9 @@ const router = createRouter({
     {
       path: '/report-manage',
       name: 'ReportManage',
-      // redirect: {
-      //   name: 'ReportList'
-      // },
+      redirect: {
+        name: 'ReportList'
+      },
       meta: {
         title: '报表管理',
         showInNav: true
@@ -51,7 +51,8 @@ const router = createRouter({
           path: 'list',
           name: 'ReportList',
           meta: {
-            title: '报表管理',
+            title: '报表列表',
+            show: true,
             icon: '<icon-unordered-list />'
           },
           component: ReportManage
