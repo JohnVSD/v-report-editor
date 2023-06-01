@@ -4,6 +4,7 @@ import Layout from "@/views/layout/index.vue";
 
 import MyReport from "@/views/my-report/index.vue";
 import ReportManage from "@/views/report-manage/index.vue";
+import Editor from "@/views/editor/index.vue";
 
 
 const router = createRouter({
@@ -59,6 +60,11 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: '/report-editor',
+      name: 'ReportEditor',
+      component: Editor
+    }
   ]
 })
 
