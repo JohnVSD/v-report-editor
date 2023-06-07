@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "vue": "^3.2.47",
+    "vue-grid-layout": "^3.0.0-beta1",
     "vue-router": "^4.2.1"
   },
   "devDependencies": {

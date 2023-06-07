@@ -3,17 +3,55 @@
     <Header />
     <div class="editor-container">
       <div class="editor-main">
-        组件编排区域
+        <grid-layout
+          v-model:layout="layout"
+          :col-num="12"
+          :row-height="1"
+          :margin="[16, 16]"
+        >
+          <grid-item
+            v-for="item in layout"
+            :key="item.i"
+            :x="item.x"
+            :y="item.y"
+            :w="item.w"
+            :h="item.h"
+            :i="item.i"
+          >
+            <a-card
+              :title="item.name"
+              :bordered="false"
+              :style="{ width: '100%', height: '100%' }"
+            >
+              <template #extra>
+                <a-link>More</a-link>
+              </template>
+              Card content
+            </a-card>
+            <!-- <div class="chart">
+              <div class="chart-header">
+                {{ item.name }}
+              </div>
+              <div class="chart-body"> 内容 </div>
+            </div> -->
+          </grid-item>
+        </grid-layout>
       </div>
-      <div class="editor-setting">
-        组件设置区域
-      </div>
+      <div class="editor-setting">组件设置区域</div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import Header from "./components/editor-header.vue"
+import { ref } from 'vue';
+import Header from './components/editor-header.vue';
+import { IChart } from '@/types/chart';
+
+const layout = ref([
+  { x: 0, y: 0, w: 2, h: 5, i: '0', name: '报表1' },
+  { x: 2, y: 0, w: 2, h: 5, i: '1', name: '报表2' },
+  { x: 4, y: 0, w: 2, h: 5, i: '2', name: '报表3' },
+]);
 </script>
 
 <style lang="less" scoped>
@@ -21,6 +59,7 @@ import Header from "./components/editor-header.vue"
   width: 100vw;
   height: 100vh;
 }
+
 .editor-container {
   height: calc(100% - 60px);
   width: 100%;
@@ -29,6 +68,7 @@ import Header from "./components/editor-header.vue"
   overflow: hidden;
   background-color: var(--color-fill-2);
 }
+
 .editor-main {
   height: 100%;
   width: 100%;
@@ -38,6 +78,21 @@ import Header from "./components/editor-header.vue"
   padding: 16px;
   box-sizing: border-box;
 }
+
+.chart {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.chart-header {
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .editor-setting {
   background-color: #fff;
   width: 360px;
