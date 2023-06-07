@@ -1,11 +1,10 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router';
 
-import Layout from "@/views/layout/index.vue";
+import Layout from '@/views/layout/index.vue';
 
-import MyReport from "@/views/my-report/index.vue";
-import ReportManage from "@/views/report-manage/index.vue";
-import Editor from "@/views/editor/index.vue";
-
+import MyReport from '@/views/my-report/index.vue';
+import ReportManage from '@/views/report-manage/index.vue';
+import Editor from '@/views/editor/index.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -14,8 +13,8 @@ const router = createRouter({
       path: '/',
       name: 'homepage',
       redirect: {
-        name: 'MyReport'
-      }
+        name: 'MyReport',
+      },
     },
     {
       path: '/my-report',
@@ -23,28 +22,28 @@ const router = createRouter({
       component: Layout,
       meta: {
         title: '我的报表',
-        showInNav: true
+        showInNav: true,
       },
       children: [
         {
           path: 'report-list',
           name: 'MyReportList',
           meta: {
-            title: '我的报表'
+            title: '我的报表',
           },
-          component: MyReport
-        }
-      ]
+          component: MyReport,
+        },
+      ],
     },
     {
       path: '/report-manage',
       name: 'ReportManage',
       redirect: {
-        name: 'ReportList'
+        name: 'ReportList',
       },
       meta: {
         title: '报表管理',
-        showInNav: true
+        showInNav: true,
       },
       component: Layout,
       children: [
@@ -54,18 +53,18 @@ const router = createRouter({
           meta: {
             title: '报表列表',
             show: true,
-            icon: '<icon-unordered-list />'
+            icon: '<icon-unordered-list />',
           },
-          component: ReportManage
-        }
-      ]
+          component: ReportManage,
+        },
+      ],
     },
     {
       path: '/report-editor',
       name: 'ReportEditor',
-      component: Editor
-    }
-  ]
-})
+      component: Editor,
+    },
+  ],
+});
 
 export default router;

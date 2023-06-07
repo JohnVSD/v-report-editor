@@ -1,6 +1,11 @@
 <template>
   <a-card title="报表列表" :bordered="false" :style="{ width: '100%' }">
-    <a-table :bordered="false" :columns="columns" :data="data" @cellClick="cellClick"/>
+    <a-table
+      :bordered="false"
+      :columns="columns"
+      :data="data"
+      @cell-click="cellClick"
+    />
   </a-card>
 </template>
 
@@ -9,7 +14,7 @@ import { TableColumnData, TableData } from '@arco-design/web-vue';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
 const columns = [
   {
@@ -40,16 +45,14 @@ const data = reactive([
     desc: '分析一些东西',
     status: 0,
     updateTime: '2023-04-25',
-    creator: '张三'
-  }
-])
+    creator: '张三',
+  },
+]);
 
 function cellClick(record: TableData, column: TableColumnData) {
-  console.log('点击行：', column.title);
-  router.push({ name: 'ReportEditor' })
+  console.log('点击行：', column.title, record);
+  router.push({ name: 'ReportEditor' });
 }
 </script>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>
