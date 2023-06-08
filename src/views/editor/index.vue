@@ -18,22 +18,7 @@
             :h="item.h"
             :i="item.i"
           >
-            <a-card
-              :title="item.name"
-              :bordered="false"
-              :style="{ width: '100%', height: '100%' }"
-            >
-              <template #extra>
-                <a-link>More</a-link>
-              </template>
-              Card content
-            </a-card>
-            <!-- <div class="chart">
-              <div class="chart-header">
-                {{ item.name }}
-              </div>
-              <div class="chart-body"> 内容 </div>
-            </div> -->
+            <ChartLayout :data="item" />
           </grid-item>
         </grid-layout>
       </div>
@@ -44,13 +29,24 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import Header from './components/editor-header.vue';
-import { IChart } from '@/types/chart';
+import type { Ref } from 'vue';
 
-const layout = ref([
-  { x: 0, y: 0, w: 2, h: 5, i: '0', name: '报表1' },
-  { x: 2, y: 0, w: 2, h: 5, i: '1', name: '报表2' },
-  { x: 4, y: 0, w: 2, h: 5, i: '2', name: '报表3' },
+import ChartLayout from '@/components/chart-layout/index.vue';
+import Header from './components/editor-header.vue';
+
+const layout: Ref<IChart[]> = ref([
+  {
+    x: 0,
+    y: 0,
+    w: 2,
+    h: 7,
+    i: '0',
+    name: '折线',
+    remark: '我是一个折线图',
+    type: 'line',
+  },
+  { x: 2, y: 0, w: 2, h: 7, i: '1', name: '柱状', type: 'bar' },
+  { x: 4, y: 0, w: 2, h: 7, i: '2', name: 'table', type: 'table' },
 ]);
 </script>
 
@@ -77,20 +73,6 @@ const layout = ref([
   position: relative;
   padding: 16px;
   box-sizing: border-box;
-}
-
-.chart {
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  border-radius: 2px;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.chart-header {
-  font-size: 14px;
-  font-weight: bold;
 }
 
 .editor-setting {
