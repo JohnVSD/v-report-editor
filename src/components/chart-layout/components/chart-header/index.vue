@@ -3,13 +3,12 @@
     <div class="chart-header__left">
       <h3 class="chart-header__left">{{ title }}</h3>
       <!-- 描述文案 -->
-      <icon-exclamation-circle />
       <a-tooltip v-if="remark !== ''" :content="remark">
-        <icon-exclamation-circle />
+        <icon-exclamation-circle :size="16" class="mx-10" />
       </a-tooltip>
     </div>
     <div class="chart-header__center">中间</div>
-    <div class="chart-header__right">右侧</div>
+    <div class="chart-header__right">...</div>
   </div>
 </template>
 
@@ -26,10 +25,16 @@ defineProps({
 <style lang="less" scoped>
 .chart-header {
   padding: 16px;
-  height: 46px;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  // border-bottom: 1px solid var(--color-neutral-3);
+
+  &__left {
+    display: flex;
+    place-items: center;
+  }
 
   &__left h3 {
     font-size: 16px;

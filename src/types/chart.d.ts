@@ -20,4 +20,5 @@ interface IChart extends GridItem {
   left?: number; // 转换前的 x 属性
   top?: number; // 转换前的 y 属性
   order?: number; // 转换前的 i 属性
+  [propName: string]: any;
 }

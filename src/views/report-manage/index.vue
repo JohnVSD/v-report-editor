@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="report-manage">
     <ReportList />
   </section>
 </template>

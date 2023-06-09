@@ -1,5 +1,5 @@
 <template>
-  <section class="container editor-workplace">
+  <section class="editor-workplace">
     <Header />
     <div class="editor-container">
       <div class="editor-main">
@@ -45,13 +45,31 @@ const layout: Ref<IChart[]> = ref([
     remark: '我是一个折线图',
     type: 'line',
   },
-  { x: 2, y: 0, w: 2, h: 7, i: '1', name: '柱状', type: 'bar' },
-  { x: 4, y: 0, w: 2, h: 7, i: '2', name: 'table', type: 'table' },
+  {
+    x: 2,
+    y: 0,
+    w: 2,
+    h: 7,
+    i: '1',
+    name: '柱状',
+    type: 'bar',
+    remark: '我是一个柱子',
+  },
+  {
+    x: 4,
+    y: 0,
+    w: 2,
+    h: 7,
+    i: '2',
+    name: 'table',
+    type: 'table',
+    remark: '我是一个table',
+  },
 ]);
 </script>
 
 <style lang="less" scoped>
-.container {
+.editor-workplace {
   width: 100vw;
   height: 100vh;
 }

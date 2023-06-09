@@ -7,6 +7,7 @@ import App from './App.vue';
 
 // CSS 部分
 import '@/assets/style/global.less';
+import '@/assets/style/tailwind.css';
 import '@arco-design/web-vue/dist/arco.css';
 
 const app = createApp(App);

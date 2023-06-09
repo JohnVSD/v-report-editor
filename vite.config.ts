@@ -18,4 +18,9 @@ export default defineConfig({
     ],
     extensions: ['.js', '.ts'],
   },
+  css: {
+    postcss: {
+      plugins: [require('tailwindcss'), require('autoprefixer')],
+    },
+  },
 });
