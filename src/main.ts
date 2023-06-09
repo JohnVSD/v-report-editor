@@ -15,6 +15,6 @@ app.use(router);
 
 app.use(ArcoVue);
 app.use(ArcoVueIcon);
-app.use(VueGridLayout);
+app.use(VueGridLayout as any);
 
 app.mount('#app');
