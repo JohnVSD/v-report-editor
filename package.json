@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "echarts": "^5.4.2",
+    "mockjs": "^1.1.0",
     "vue": "^3.2.47",
     "vue-grid-layout": "^3.0.0-beta1",
     "vue-router": "^4.2.1"

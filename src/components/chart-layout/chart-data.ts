@@ -1,24 +1,24 @@
 export const tableData = {
   columns: [
     {
-      name: '分组织',
-      id: 'subsys',
+      title: '分组织',
+      dataIndex: 'subsys',
     },
     {
-      name: '部门',
-      id: 'module',
+      title: '部门',
+      dataIndex: 'module',
     },
     {
-      name: '业务组',
-      id: 'business',
+      title: '业务组',
+      dataIndex: 'business',
     },
     {
-      name: '姓名',
-      id: 'name',
+      title: '姓名',
+      dataIndex: 'name',
     },
     {
-      name: '销售额',
-      id: 'value',
+      title: '销售额',
+      dataIndex: 'value',
       accuracy: 2,
     },
   ],
