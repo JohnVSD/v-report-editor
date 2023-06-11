@@ -10,11 +10,16 @@
 </template>
 
 <script lang="ts" setup>
-import { TableColumnData, TableData } from '@arco-design/web-vue';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
+import { getReportList } from '@/api/report';
+import { TableColumnData, TableData } from '@arco-design/web-vue';
+
 const router = useRouter();
+
+const reports = await getReportList();
+console.log('报表列表：', reports);
 
 const columns = [
   {

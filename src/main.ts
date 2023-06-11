@@ -3,6 +3,7 @@ import router from './router';
 import ArcoVue from '@arco-design/web-vue';
 import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import VueGridLayout from 'vue-grid-layout';
+import './mock';
 import App from './App.vue';
 
 // CSS 部分

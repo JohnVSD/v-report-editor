@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import Echarts from 'echarts';
+import * as Echarts from 'echarts';
 
 onMounted(() => {
   const echartRef = ref<HTMLElement | null>(null);
