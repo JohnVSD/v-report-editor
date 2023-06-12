@@ -12,7 +12,11 @@ export function getReportList() {
  * @param {Object} data 报表信息：name、remark...
  */
 export function createReport(data: IReport) {
-  return Axios.post<IReport[]>('/api/report/create', { data });
+  return Axios.post('/api/report/create', data, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }
 
 /**

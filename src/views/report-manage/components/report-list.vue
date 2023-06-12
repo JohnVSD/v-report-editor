@@ -1,5 +1,8 @@
 <template>
   <a-card title="报表列表" :bordered="false" :style="{ width: '100%' }">
+    <a-button class="mb-16" type="primary" @click="handleCreateReport"
+      >新建</a-button
+    >
     <a-table
       :bordered="false"
       :columns="columns"
@@ -12,14 +15,16 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-
-import { getReportList } from '@/api/report';
-import { TableColumnData, TableData } from '@arco-design/web-vue';
+import { createReport, getReportList } from '@/api/report';
+import { TableColumnData, TableData, Message } from '@arco-design/web-vue';
 
 const router = useRouter();
 
-const reports = await getReportList();
-console.log('报表列表：', reports);
+async function renderReports() {
+  const reports = await getReportList();
+  console.log('报表列表：', reports);
+}
+renderReports();
 
 const columns = [
   {
@@ -53,6 +58,23 @@ const data = reactive([
     creator: '张三',
   },
 ]);
+
+async function handleCreateReport() {
+  const {
+    data: { data, code = 0, msg },
+  } = await createReport({
+    name: '第一个报表',
+    remark: '描述一下',
+    status: 0,
+  });
+
+  if (code === 0) {
+    Message.success('创建成功');
+    renderReports();
+  } else {
+    Message.warning('Error：' + msg);
+  }
+}
 
 function cellClick(record: TableData, column: TableColumnData) {
   console.log('点击行：', column.title, record);

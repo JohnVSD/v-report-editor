@@ -6,28 +6,27 @@
     <a-layout>
       <a-layout-sider class="layout-sider" collapsible breakpoint="xl">
         <Menu v-if="isMyReport" />
-        <sidebar v-else ></sidebar>
+        <sidebar v-else></sidebar>
       </a-layout-sider>
       <a-layout-content class="layout-content">
         <router-view></router-view>
-      </a-layout-content
-    >
+      </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 
 <script lang="ts" setup>
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+
 import Navbar from '@/components/navbar/index.vue';
 import Sidebar from './components/sidebar.vue';
 import Menu from './components/menu.vue';
-import { useRoute } from 'vue-router';
-import { computed } from 'vue';
 
 const route = useRoute();
 const isMyReport = computed(() => {
   return route.name === 'MyReport';
 });
-
 </script>
 
 <style lang="less" scoped>
@@ -55,7 +54,7 @@ const isMyReport = computed(() => {
   left: 0;
   z-index: 99;
   height: 100%;
-  transition: all .2s cubic-bezier(.34, .69, .1, 1);
+  transition: all 0.2s cubic-bezier(0.34, 0.69, 0.1, 1);
 }
 
 .layout-content {
