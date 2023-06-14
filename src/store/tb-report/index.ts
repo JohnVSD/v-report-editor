@@ -12,6 +12,9 @@ export const useTbReportStore = defineStore('tbReport', {
     addReport(data: any) {
       this.reports.push(data);
     },
+    findOneReport(hash: string) {
+      return this.reports.find((item) => item.hash === hash) || null;
+    },
     removeReport(hash: string) {
       this.reports = this.reports.filter((item) => item.hash !== hash);
     },

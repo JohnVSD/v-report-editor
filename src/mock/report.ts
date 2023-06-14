@@ -25,7 +25,29 @@ Mock.mock(new RegExp('/api/report/create'), (params) => {
   return successResponseWrap(data);
 });
 
+Mock.mock(new RegExp('/api/report/update'), (params) => {});
+
+// 列表
 Mock.mock(new RegExp('/api/report/list'), () => {
   const tbReportStore = useTbReportStore();
   return tbReportStore.getReports;
+});
+
+// 详情
+Mock.mock(new RegExp('/api/report/detail'), (params) => {
+  const { body } = params;
+  const {
+    data: { reportHash },
+  } = JSON.parse(body);
+  const report = useTbReportStore().findOneReport(reportHash);
+  return report;
+});
+
+// 删除
+Mock.mock(new RegExp('/api/report/del'), (params) => {
+  const { body } = params;
+  const {
+    data: { reportHash },
+  } = JSON.parse(body);
+  useTbReportStore().removeReport(reportHash);
 });
