@@ -3,24 +3,30 @@
     <Header />
     <div class="editor-container">
       <div class="editor-main">
-        <grid-layout
-          v-model:layout="layout"
-          :col-num="12"
-          :row-height="1"
-          :margin="[16, 16]"
-        >
-          <grid-item
-            v-for="item in layout"
-            :key="item.i"
-            :x="item.x"
-            :y="item.y"
-            :w="item.w"
-            :h="item.h"
-            :i="item.i"
+        <div class="editor-report p-14 box-border mb-16">
+          <h3>报表名称</h3>
+        </div>
+        <!--  -->
+        <div class="editor-charts">
+          <grid-layout
+            v-model:layout="layout"
+            :col-num="12"
+            :row-height="1"
+            :margin="[16, 16]"
           >
-            <ChartLayout :data="item" />
-          </grid-item>
-        </grid-layout>
+            <grid-item
+              v-for="item in layout"
+              :key="item.i"
+              :x="item.x"
+              :y="item.y"
+              :w="item.w"
+              :h="item.h"
+              :i="item.i"
+            >
+              <ChartLayout :data="item" />
+            </grid-item>
+          </grid-layout>
+        </div>
       </div>
       <div class="editor-setting">组件设置区域</div>
     </div>
@@ -89,8 +95,15 @@ const layout: Ref<IChart[]> = ref([
   flex-grow: 1;
   overflow-x: hidden;
   position: relative;
-  padding: 16px;
   box-sizing: border-box;
+}
+
+.editor-report {
+  background-color: #fff;
+
+  h3 {
+    font-weight: bold;
+  }
 }
 
 .editor-setting {

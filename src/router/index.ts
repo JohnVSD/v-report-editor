@@ -4,7 +4,7 @@ import Layout from '@/views/layout/index.vue';
 
 import MyReport from '@/views/my-report/index.vue';
 import ReportManage from '@/views/report-manage/index.vue';
-import Editor from '@/views/editor/index.vue';
+import ReportEditor from '@/views/editor/index.vue';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -60,9 +60,9 @@ const router = createRouter({
       ],
     },
     {
-      path: '/report-editor',
+      path: '/report-editor/:reportHash',
       name: 'ReportEditor',
-      component: Editor,
+      component: ReportEditor,
     },
   ],
 });
