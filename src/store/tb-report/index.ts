@@ -17,6 +17,7 @@ export const useTbReportStore = defineStore('tbReport', {
     },
     removeReport(hash: string) {
       this.reports = this.reports.filter((item) => item.hash !== hash);
+      // ! 同时清除对应 chart 表中数据
     },
   },
 });

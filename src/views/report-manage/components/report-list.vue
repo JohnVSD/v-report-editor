@@ -27,7 +27,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getReportList, delReport } from '@/api/report';
-import { TableData } from '@arco-design/web-vue';
+import { TableColumnData, TableData } from '@arco-design/web-vue';
 import ReportAdd from './report-add.vue';
 
 const router = useRouter();
@@ -75,8 +75,10 @@ async function deleteReport(hash: string) {
   renderReports();
 }
 
-function cellClick(record: TableData) {
-  router.push(`/report-editor/${record.hash}`);
+function cellClick(record: TableData, column: TableColumnData) {
+  if (column.dataIndex === 'name') {
+    router.push(`/report-editor/${record.hash}`);
+  }
 }
 </script>
 
