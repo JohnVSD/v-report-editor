@@ -12,6 +12,7 @@ onMounted(() => {
   const Echart = Echarts.init(echartRef.value);
 
   Echart.setOption({
+    tooltip: {},
     legend: {
       data: ['销量'],
     },
