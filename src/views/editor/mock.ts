@@ -1,0 +1,32 @@
+export const mockCharts: IChart[] = [
+  {
+    x: 0,
+    y: 0,
+    w: 4,
+    h: 30,
+    i: 0,
+    name: '折线',
+    remark: '我是一个折线图',
+    type: 'line',
+  },
+  {
+    x: 4,
+    y: 0,
+    w: 4,
+    h: 30,
+    i: 1,
+    name: '柱状',
+    type: 'bar',
+    remark: '我是一个柱子',
+  },
+  {
+    x: 8,
+    y: 0,
+    w: 4,
+    h: 30,
+    i: 2,
+    name: 'table',
+    type: 'table',
+    remark: '我是一个table',
+  },
+];

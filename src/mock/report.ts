@@ -1,8 +1,9 @@
 import Mock from 'mockjs';
 import { v1 as uuidv1 } from 'uuid';
 import dayjs from 'dayjs';
-import { useTbReportStore } from '../store';
+import { useTbReportStore, useTbChartsStore } from '../store';
 import { successResponseWrap, failResponseWrap } from '@/utils/setup-mock';
+import { parseUrlParams } from '@/utils';
 
 Mock.mock(new RegExp('/api/report/create'), (params) => {
   const tbReportStore = useTbReportStore();
@@ -20,12 +21,20 @@ Mock.mock(new RegExp('/api/report/create'), (params) => {
   data.createdAt = dateTime;
   data.updateAt = dateTime;
 
-  tbReportStore.addReport(data);
+  tbReportStore.create(data);
 
   return successResponseWrap(data);
 });
 
-Mock.mock(new RegExp('/api/report/update'), (params) => {});
+Mock.mock('/api/report/update', (params) => {
+  const { body } = params;
+  const {
+    data: { hash, name, remark },
+  } = JSON.parse(body);
+
+  const tbReportStore = useTbReportStore();
+  tbReportStore.update({ hash, name, remark });
+});
 
 // 列表
 Mock.mock(new RegExp('/api/report/list'), () => {
@@ -35,19 +44,33 @@ Mock.mock(new RegExp('/api/report/list'), () => {
 
 // 详情
 Mock.mock(new RegExp('/api/report/detail'), (params) => {
-  const { body } = params;
-  const {
-    data: { reportHash },
-  } = JSON.parse(body);
-  const report = useTbReportStore().findOneReport(reportHash);
+  const { body, type, url } = params;
+  const requestData =
+    type === 'GET' && body === null ? parseUrlParams(url) : JSON.parse(body);
+
+  const { reportHash } = requestData;
+  const report = useTbReportStore().findOne(reportHash);
+  if (report) {
+    report.charts = useTbChartsStore().findAll(reportHash);
+  }
+
   return report;
 });
 
-// 删除
-Mock.mock(new RegExp('/api/report/del'), (params) => {
+// 报表编辑器保存
+Mock.mock('/api/report/update_all', (params) => {
   const { body } = params;
   const {
-    data: { reportHash },
+    data: { report, charts },
   } = JSON.parse(body);
-  useTbReportStore().removeReport(reportHash);
+
+  const tbReportStore = useTbReportStore();
+  const tbChartsStore = useTbChartsStore();
+
+  // 更新报表
+  const { hash, name, remark } = report;
+  tbReportStore.update({ hash, name, remark });
+
+  // 更新图表
+  tbChartsStore.update(hash, charts);
 });

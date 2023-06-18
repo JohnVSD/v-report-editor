@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import { useStorage, RemovableRef } from '@vueuse/core';
+import dayjs from 'dayjs';
+import { useTbChartsStore } from '@/store';
 
 export const useTbReportStore = defineStore('tbReport', {
   state: () => ({
@@ -9,15 +11,27 @@ export const useTbReportStore = defineStore('tbReport', {
     getReports: (state) => state.reports,
   },
   actions: {
-    addReport(data: any) {
+    create(data: any) {
       this.reports.push(data);
     },
-    findOneReport(hash: string) {
+    update(data: { hash: string; name: string; remark: string }) {
+      const { hash, name, remark } = data;
+      this.reports.forEach((item) => {
+        if (item.hash === hash) {
+          item.name = name;
+          item.remark = remark;
+          item.status = 1;
+          item.updateAt = dayjs().format('YYYY-MM-DD HH:mm:ss');
+        }
+      });
+    },
+    findOne(hash: string) {
       return this.reports.find((item) => item.hash === hash) || null;
     },
-    removeReport(hash: string) {
+    remove(hash: string) {
       this.reports = this.reports.filter((item) => item.hash !== hash);
-      // ! 同时清除对应 chart 表中数据
+      // 同时清除对应 chart 表中数据
+      useTbChartsStore().clearAll(hash);
     },
   },
 });

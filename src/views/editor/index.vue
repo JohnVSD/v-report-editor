@@ -1,10 +1,10 @@
 <template>
   <section class="editor-workplace">
-    <Header />
+    <Header @create-chart="createChart" @save="saveReport" />
     <div class="editor-container">
       <div class="editor-main">
         <div class="editor-report p-14 box-border mb-16">
-          <h3>报表名称</h3>
+          <h3>{{ reportInfo?.name }}</h3>
         </div>
         <!--  -->
         <div class="editor-charts">
@@ -34,44 +34,54 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import type { Ref } from 'vue';
-
+import { ref, onUnmounted, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useEditorStore } from '@/store';
+import { getReportDetail, saveReportInfo } from '@/api/report';
+import { Message } from '@arco-design/web-vue';
 import ChartLayout from '@/components/chart-layout/index.vue';
 import Header from './components/editor-header.vue';
 
-const layout: Ref<IChart[]> = ref([
-  {
-    x: 0,
-    y: 0,
-    w: 4,
-    h: 30,
-    i: '0',
-    name: '折线',
-    remark: '我是一个折线图',
-    type: 'line',
-  },
-  {
-    x: 4,
-    y: 0,
-    w: 4,
-    h: 30,
-    i: '1',
-    name: '柱状',
-    type: 'bar',
-    remark: '我是一个柱子',
-  },
-  {
-    x: 8,
-    y: 0,
-    w: 4,
-    h: 30,
-    i: '2',
-    name: 'table',
-    type: 'table',
-    remark: '我是一个table',
-  },
-]);
+const route = useRoute();
+const reportHash = route.params?.reportHash as string;
+const editorStore = useEditorStore();
+const layout = ref<IChart[]>([]);
+
+const reportInfo = computed(() => {
+  return editorStore.report;
+});
+
+async function reportDetail() {
+  const { data } = await getReportDetail({ reportHash });
+  const { charts = [], ...rest } = data;
+  layout.value = charts;
+  editorStore.init(rest, charts);
+}
+reportDetail();
+
+onUnmounted(() => {
+  editorStore.clearAll();
+});
+
+const createChart = (type: string) => {
+  switch (type) {
+    case 'line':
+      console.log('创建折线图');
+      break;
+    case 'table':
+      console.log('创建表格');
+      break;
+    default:
+      console.warn('创建图表失败：type is empty');
+      break;
+  }
+};
+
+const saveReport = async () => {
+  const { report, charts } = editorStore;
+  await saveReportInfo({ report, charts });
+  Message.success('已保存');
+};
 </script>
 
 <style lang="less" scoped>

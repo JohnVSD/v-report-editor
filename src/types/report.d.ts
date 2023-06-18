@@ -7,6 +7,7 @@ interface IReport {
   createdAt?: string;
   updateAt?: string;
   creator?: string;
+  charts?: IChart[];
 }
 
 type IReportDetailMap = Map<string, IChart>;

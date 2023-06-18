@@ -24,7 +24,12 @@ export function createReport(data: IReport) {
  * @param {Object} params
  */
 export function getReportDetail(params: { reportHash: string }) {
-  return Axios.get<IReport>('/api/report/detail', { params });
+  return Axios.get<IReport>('/api/report/detail', {
+    params,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }
 
 /**
@@ -40,7 +45,7 @@ export function updateReport(data: { reportHash: string; detail: IReport }) {
 /**
  * 保存报表信息：图表位置等配置信息
  */
-export function saveReportInfo(data: { reportHash: string; charts: IChart[] }) {
+export function saveReportInfo(data: { report: IReport; charts: IChart[] }) {
   return Axios.post<IReport>('/api/report/update_all', { data });
 }
 

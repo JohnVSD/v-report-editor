@@ -9,8 +9,8 @@ export const useTbChartsStore = defineStore('tbCharts', {
   }),
   getters: {},
   actions: {
-    findOne(reportHash: string) {
-      return this.charts.get(reportHash) || null;
+    findAll(reportHash: string) {
+      return this.charts.get(reportHash) || [];
     },
     update(reportHash: string, data: IChart[]) {
       this.charts.set(reportHash, data);

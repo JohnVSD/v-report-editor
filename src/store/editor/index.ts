@@ -22,7 +22,9 @@ export const useEditorStore = defineStore('editor', {
     // 其余部分
     activeObj: null, // 当前激活的对象
   }),
-  getters: {},
+  getters: {
+    getReport: (state) => state.report,
+  },
   actions: {
     /**
      * 已存在报表进行编辑时用到
@@ -39,6 +41,9 @@ export const useEditorStore = defineStore('editor', {
     },
     setReport(data: IReport) {
       this.report = data;
+    },
+    setCharts(charts: IChart[]) {
+      this.charts = [...charts];
     },
     createChart(data: IChart) {
       this.charts.push(data);

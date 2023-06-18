@@ -1,31 +1,47 @@
 <template>
   <section class="editor-header">
     <div class="left-side">logo</div>
-    <div class="center-side">table chart 组件选择</div>
-    <ul class="right-side">
-      <li>保存并预览</li>
-      <li>
-        <a-button type="text" @click="save">保存</a-button>
+    <ul class="center-side btn-group">
+      <li @click="createChart('line')">
+        <icon-bar-chart class="icon" />
+        <p>图表</p>
       </li>
+      <li @click="createChart('table')">
+        <icon-drag-dot class="icon" />
+        <p>表格</p>
+      </li>
+    </ul>
+    <ul class="right-side btn-group">
       <li>
-        <a-button type="text" @click="exit">退出</a-button>
+        <icon-eye class="icon" />
+        <p>保存并预览</p>
+      </li>
+      <li @click="save">
+        <icon-save class="icon" />
+        <p>保存</p>
+      </li>
+      <li @click="exit">
+        <icon-export class="icon" />
+        <p>退出</p>
       </li>
     </ul>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { defineEmits } from 'vue';
+const emit = defineEmits(['createChart', 'save', 'exit']);
 
-const emits = defineEmits(['save', 'exit']);
+const createChart = (type: string) => {
+  emit('createChart', type);
+};
 
-function save() {
-  emits('save');
-}
+const save = () => {
+  emit('save');
+};
 
-function exit() {
-  emits('exit');
-}
+const exit = () => {
+  emit('exit');
+};
 </script>
 
 <style lang="less" scoped>
@@ -41,9 +57,32 @@ function exit() {
   box-sizing: border-box;
 }
 
+.center-side {
+  display: flex;
+}
+
 .right-side {
-  width: 200px;
+  width: 220px;
   display: flex;
   justify-content: space-between;
+}
+
+.btn-group {
+  li {
+    margin-right: 16px;
+    transition: all 0.2s;
+    font-size: 12px;
+    padding: 4px 8px;
+    text-align: center;
+    cursor: pointer;
+
+    .icon {
+      font-size: 24px;
+    }
+  }
+
+  li:hover {
+    background-color: #000;
+  }
 }
 </style>
