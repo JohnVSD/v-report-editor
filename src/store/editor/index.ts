@@ -42,15 +42,20 @@ export const useEditorStore = defineStore('editor', {
     setReport(data: IReport) {
       this.report = data;
     },
-    setCharts(charts: IChart[]) {
-      this.charts = [...charts];
-    },
+    // chart 操作
     createChart(data: IChart) {
       this.charts.push(data);
+    },
+    updateCharts(charts: IChart[]) {
+      this.charts = [...charts];
+    },
+    removeChart(chartId: string) {
+      this.charts = this.charts.filter((item) => item.id !== chartId);
     },
     setActiveChart(data: { id: string; type: string }) {
       this.activeChart = { ...data };
     },
+    // 清空当前store
     clearAll() {
       this.charts = [];
       this.report = null;

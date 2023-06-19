@@ -7,8 +7,17 @@
         <icon-exclamation-circle :size="16" class="mx-10" />
       </a-tooltip>
     </div>
-    <div class="chart-header__center">中间</div>
-    <div class="chart-header__right">...</div>
+    <div class="chart-header__center"></div>
+    <div class="chart-header__right">
+      <a-dropdown trigger="click" @select="handleDropdown">
+        <span class="inline-block px-10 cursor-pointer">
+          <icon-more />
+        </span>
+        <template #content>
+          <a-doption value="delete">删除</a-doption>
+        </template>
+      </a-dropdown>
+    </div>
   </div>
 </template>
 
@@ -20,6 +29,12 @@ defineProps({
   },
   remark: String,
 });
+
+const emit = defineEmits(['handleDropdown']);
+
+const handleDropdown = (value: any) => {
+  emit('handleDropdown', value);
+};
 </script>
 
 <style lang="less" scoped>

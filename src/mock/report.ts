@@ -74,3 +74,14 @@ Mock.mock('/api/report/update_all', (params) => {
   // 更新图表
   tbChartsStore.update(hash, charts);
 });
+
+// 列表
+Mock.mock(new RegExp('/api/report/del'), (params) => {
+  const { body } = params;
+  const {
+    data: { reportHash = '' },
+  } = JSON.parse(body);
+
+  const tbReportStore = useTbReportStore();
+  tbReportStore.remove(reportHash);
+});

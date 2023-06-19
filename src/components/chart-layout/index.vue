@@ -1,6 +1,10 @@
 <template>
   <section class="chart">
-    <ChartHeader :title="data.name" :remark="data.remark" />
+    <ChartHeader
+      :title="data.name"
+      :remark="data.remark"
+      @handle-dropdown="handleDropdown"
+    />
     <div class="chart-body px-16">
       <component
         :is="currentChart"
@@ -13,17 +17,19 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { useEditorStore } from '@/store';
 import ChartHeader from './components/chart-header/index.vue';
 import Chart from '@/components/chart-layout/components/render/chart.vue';
 import Table from '@/components/chart-layout/components/render/table.vue';
+
 import { tableData, lineData, barData } from './chart-data.js';
 
 const props = defineProps<{
   data: IChart;
 }>();
 
+const editorStore = useEditorStore();
 const chartType = computed(() => props.data.type || '');
-
 const currentChart = computed(() => {
   switch (chartType.value) {
     case 'table':
@@ -35,7 +41,6 @@ const currentChart = computed(() => {
       return null;
   }
 });
-
 // 获取 chartData 数据
 const chartData = computed(() => {
   switch (chartType.value) {
@@ -49,6 +54,16 @@ const chartData = computed(() => {
       return null;
   }
 });
+
+const handleDropdown = (value: string) => {
+  switch (value) {
+    case 'delete':
+      editorStore.removeChart(props.data.id);
+      break;
+    default:
+      break;
+  }
+};
 </script>
 
 <style lang="less" scoped>
