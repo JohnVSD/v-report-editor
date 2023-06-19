@@ -1,60 +1,72 @@
 <template>
   <section class="editor-workplace">
     <Header @create-chart="createChart" @save="saveReport" />
+    <!-- 内容区 -->
     <div class="editor-container">
       <div class="editor-main">
         <div class="editor-report p-14 box-border mb-16">
           <h3>{{ reportInfo?.name }}</h3>
         </div>
-        <!--  -->
+        <!-- 图表拖拽区 -->
         <div class="editor-charts">
           <grid-layout
-            v-model:layout="layout"
+            v-model:layout="charts"
             :col-num="12"
             :row-height="1"
             :margin="[16, 16]"
           >
             <grid-item
-              v-for="item in layout"
-              :key="item.i"
+              v-for="item in charts"
+              :key="item.id"
               :x="item.x"
               :y="item.y"
               :w="item.w"
               :h="item.h"
               :i="item.i"
+              :class="{ 'grid-item__active': item.id === activeChart?.id }"
+              @click="setActiveChart(item)"
             >
               <ChartLayout :data="item" />
             </grid-item>
           </grid-layout>
         </div>
       </div>
+      <!-- 右侧配置区 -->
       <div class="editor-setting">组件设置区域</div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { ref, onUnmounted, computed } from 'vue';
+import { onUnmounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { Message } from '@arco-design/web-vue';
+
 import { useEditorStore } from '@/store';
 import { getReportDetail, saveReportInfo } from '@/api/report';
-import { Message } from '@arco-design/web-vue';
+import ComponentInstance, {
+  ComponentBase,
+} from '@/components/editor/component-factory';
 import ChartLayout from '@/components/chart-layout/index.vue';
 import Header from './components/editor-header.vue';
 
 const route = useRoute();
 const reportHash = route.params?.reportHash as string;
-const editorStore = useEditorStore();
-const layout = ref<IChart[]>([]);
 
+const editorStore = useEditorStore();
 const reportInfo = computed(() => {
   return editorStore.report;
+});
+const activeChart = computed(() => {
+  return editorStore.activeChart;
+});
+const charts = computed(() => {
+  return editorStore.charts;
 });
 
 async function reportDetail() {
   const { data } = await getReportDetail({ reportHash });
   const { charts = [], ...rest } = data;
-  layout.value = charts;
   editorStore.init(rest, charts);
 }
 reportDetail();
@@ -64,17 +76,29 @@ onUnmounted(() => {
 });
 
 const createChart = (type: string) => {
+  let entity: ComponentBase | null = null;
+
   switch (type) {
     case 'line':
       console.log('创建折线图');
+      entity = ComponentInstance['line'];
+      break;
+    case 'bar':
+      console.log('创建折线图');
+      entity = ComponentInstance['bar'];
       break;
     case 'table':
       console.log('创建表格');
+      entity = ComponentInstance['table'];
       break;
     default:
-      console.warn('创建图表失败：type is empty');
-      break;
+      Message.warning('图表类型未找到' + type);
+      return false;
   }
+  entity.i = charts.value.length;
+
+  editorStore.createChart(entity);
+  setActiveChart(entity);
 };
 
 const saveReport = async () => {
@@ -82,6 +106,10 @@ const saveReport = async () => {
   await saveReportInfo({ report, charts });
   Message.success('已保存');
 };
+
+function setActiveChart(item: IChart) {
+  editorStore.setActiveChart({ id: item.id, type: item.type });
+}
 </script>
 
 <style lang="less" scoped>
@@ -113,6 +141,21 @@ const saveReport = async () => {
 
   h3 {
     font-weight: bold;
+  }
+}
+
+.vue-grid-item {
+  border: 1px solid #fff;
+  border-radius: 2px;
+
+  &:hover {
+    box-shadow: 0 0 6px #5392ff;
+  }
+}
+
+.editor-charts {
+  .grid-item__active {
+    border: 1px solid #5392ff;
   }
 }
 

@@ -6,9 +6,9 @@ interface IEditor {
   charts: IChart[];
   report: IReport | null;
   // 其余部分
-  activeObj: {
+  activeChart: {
+    id: string;
     type: string;
-    frontendId: string;
   } | null;
 }
 
@@ -20,7 +20,7 @@ export const useEditorStore = defineStore('editor', {
     initCharts: [],
     initReport: null,
     // 其余部分
-    activeObj: null, // 当前激活的对象
+    activeChart: null, // 当前激活的对象
   }),
   getters: {
     getReport: (state) => state.report,
@@ -37,7 +37,7 @@ export const useEditorStore = defineStore('editor', {
       this.initReport = report;
       this.initCharts = [...charts];
 
-      this.activeObj = null;
+      this.activeChart = null;
     },
     setReport(data: IReport) {
       this.report = data;
@@ -48,12 +48,15 @@ export const useEditorStore = defineStore('editor', {
     createChart(data: IChart) {
       this.charts.push(data);
     },
+    setActiveChart(data: { id: string; type: string }) {
+      this.activeChart = { ...data };
+    },
     clearAll() {
       this.charts = [];
       this.report = null;
       this.initReport = null;
       this.initCharts = [];
-      this.activeObj = null;
+      this.activeChart = null;
     },
   },
 });
