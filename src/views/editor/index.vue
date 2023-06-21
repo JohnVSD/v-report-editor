@@ -4,11 +4,17 @@
     <!-- 内容区 -->
     <div class="editor-container">
       <div class="editor-main">
-        <div class="editor-report p-14 box-border mb-16">
+        <div
+          class="editor-report p-14 box-border"
+          :class="{
+            'editor-report__active': activeChart?.id === 'report',
+          }"
+          @click="selectReport"
+        >
           <h3>{{ reportInfo?.name }}</h3>
         </div>
         <!-- 图表拖拽区 -->
-        <div class="editor-charts">
+        <div class="editor-charts" @click.capture="selectChart">
           <grid-layout
             v-model:layout="charts"
             :col-num="12"
@@ -23,8 +29,8 @@
               :w="item.w"
               :h="item.h"
               :i="item.i"
+              :data-chart="item.id"
               :class="{ 'grid-item__active': item.id === activeChart?.id }"
-              @click="setActiveChart(item)"
             >
               <ChartLayout :data="item" />
             </grid-item>
@@ -32,7 +38,7 @@
         </div>
       </div>
       <!-- 右侧配置区 -->
-      <div class="editor-setting">组件设置区域</div>
+      <EditorSetting />
     </div>
   </section>
 </template>
@@ -41,7 +47,6 @@
 import { onUnmounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { Message } from '@arco-design/web-vue';
-
 import { useEditorStore } from '@/store';
 import { getReportDetail, saveReportInfo } from '@/api/report';
 import ComponentInstance, {
@@ -49,6 +54,7 @@ import ComponentInstance, {
 } from '@/components/editor/component-factory';
 import ChartLayout from '@/components/chart-layout/index.vue';
 import Header from './components/editor-header.vue';
+import EditorSetting from './editor-setting/index.vue';
 
 const route = useRoute();
 const reportHash = route.params?.reportHash as string;
@@ -107,8 +113,38 @@ const saveReport = async () => {
   Message.success('已保存');
 };
 
-function setActiveChart(item: IChart) {
+const selectReport = () => {
+  setActiveChart({ id: 'report', type: 'report' });
+};
+
+function setActiveChart(item: { id: string; type: string }) {
   editorStore.setActiveChart({ id: item.id, type: item.type });
+}
+
+function selectChart(event: any) {
+  console.log(event);
+  const path = event.path as HTMLElement[];
+  let targetIndex = -1;
+
+  const isIncludeGrid = path.some((item, index) => {
+    if (!item.className) return false;
+
+    if (item.className.includes('vue-grid-item')) {
+      targetIndex = index;
+    }
+    return item.className.includes('vue-grid-item');
+  });
+
+  if (isIncludeGrid) {
+    const target = path[targetIndex];
+    const chartId = target.dataset.chart;
+    const { id = '', type = '' } = charts.value.find(
+      (item) => item.id === chartId
+    ) as IChart;
+    setActiveChart({ id, type });
+  } else {
+    selectReport();
+  }
 }
 </script>
 
@@ -141,6 +177,10 @@ function setActiveChart(item: IChart) {
 
   h3 {
     font-weight: bold;
+  }
+
+  &__active {
+    border-bottom: 1px solid #5392ff;
   }
 }
 

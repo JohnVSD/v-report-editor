@@ -24,6 +24,13 @@ export const useEditorStore = defineStore('editor', {
   }),
   getters: {
     getReport: (state) => state.report,
+    // 获取当前活跃图表的配置
+    getActiveData: (state) => {
+      const { id = '' } = state.activeChart || {};
+      return id === 'report'
+        ? state.report
+        : state.charts.find((item) => item.id === id);
+    },
   },
   actions: {
     /**
@@ -37,7 +44,10 @@ export const useEditorStore = defineStore('editor', {
       this.initReport = report;
       this.initCharts = [...charts];
 
-      this.activeChart = null;
+      this.activeChart = {
+        id: 'report',
+        type: 'report',
+      };
     },
     setReport(data: IReport) {
       this.report = data;
@@ -48,6 +58,14 @@ export const useEditorStore = defineStore('editor', {
     },
     updateCharts(charts: IChart[]) {
       this.charts = [...charts];
+    },
+    findCurrentChart(id = '') {
+      id = id || this.activeChart?.id || '';
+      if (id) {
+        return this.charts.find((item) => item.id === id) || null;
+      }
+
+      return null;
     },
     removeChart(chartId: string) {
       this.charts = this.charts.filter((item) => item.id !== chartId);
