@@ -86,15 +86,12 @@ const createChart = (type: string) => {
 
   switch (type) {
     case 'line':
-      console.log('创建折线图');
       entity = ComponentInstance['line'];
       break;
     case 'bar':
-      console.log('创建折线图');
       entity = ComponentInstance['bar'];
       break;
     case 'table':
-      console.log('创建表格');
       entity = ComponentInstance['table'];
       break;
     default:

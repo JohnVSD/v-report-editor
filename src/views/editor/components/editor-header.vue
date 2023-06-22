@@ -1,16 +1,31 @@
 <template>
   <section class="editor-header">
     <div class="left-side">logo</div>
+    <!--  -->
     <ul class="center-side btn-group">
-      <li @click="createChart('line')">
-        <icon-bar-chart class="icon" />
-        <p>图表</p>
-      </li>
-      <li @click="createChart('table')">
-        <icon-drag-dot class="icon" />
-        <p>表格</p>
+      <!-- <li @click="createChart('line')"> -->
+      <li
+        v-for="(plugin, index) in PluginList"
+        :key="`${plugin.type}-${index}`"
+        class="btn-item"
+        @click="togglePlugin(plugin)"
+      >
+        <IconFont :type="plugin.icon" />
+        <p>{{ plugin.name }}</p>
+        <div v-if="avtivePlugin === plugin.type" class="charts-btn-group">
+          <div
+            v-for="item in plugin.plugins"
+            :key="item.type"
+            class="charts-btn-item"
+            @click="createChart(item.type)"
+          >
+            <IconFont :type="item.icon" />
+            <p>{{ item.name }}</p>
+          </div>
+        </div>
       </li>
     </ul>
+    <!--  -->
     <ul class="right-side btn-group">
       <li>
         <icon-eye class="icon" />
@@ -29,7 +44,17 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
+import { IconFont } from '@/components/tools';
+import PluginList from './plugin-list';
+
 const emit = defineEmits(['createChart', 'save', 'exit']);
+
+const avtivePlugin = ref('');
+
+const togglePlugin = (plugin: any) => {
+  avtivePlugin.value = plugin.type;
+};
 
 const createChart = (type: string) => {
   emit('createChart', type);
@@ -59,6 +84,35 @@ const exit = () => {
 
 .center-side {
   display: flex;
+
+  .btn-item {
+    position: relative;
+  }
+
+  .charts-btn-group {
+    position: absolute;
+    background-color: var(--color-text-1);
+    top: 60px;
+    left: -50px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    z-index: 1;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .charts-btn-item {
+    width: 70px;
+    height: 70px;
+    padding: 16px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #000;
+    }
+  }
 }
 
 .right-side {
