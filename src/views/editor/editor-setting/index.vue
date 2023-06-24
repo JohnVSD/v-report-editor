@@ -11,9 +11,12 @@ import { useEditorStore } from '@/store';
 import { Line, Table } from './charts';
 import Report from './report/index.vue';
 
+// ! 设置表单逻辑还需要优化
+
 const componentMap: any = {
   report: Report,
   line: Line,
+  bar: Line,
   table: Table,
 };
 

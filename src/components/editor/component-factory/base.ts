@@ -19,9 +19,10 @@ export class ComponentBase {
 
     this.x = 0;
     this.y = 0;
+    this.i = 0;
+
     this.w = 4;
     this.h = 30;
-    this.i = 0;
 
     this.remark = '';
     this.hideTitle = false;

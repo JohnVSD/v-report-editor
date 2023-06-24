@@ -31,6 +31,14 @@ export const useEditorStore = defineStore('editor', {
         ? state.report
         : state.charts.find((item) => item.id === id);
     },
+    findCurrentChart: (state) => {
+      const id = state.activeChart?.id || '';
+      if (id) {
+        return state.charts.find((item) => item.id === id) || null;
+      }
+
+      return null;
+    },
   },
   actions: {
     /**
@@ -54,18 +62,10 @@ export const useEditorStore = defineStore('editor', {
     },
     // chart 操作
     createChart(data: IChart) {
-      this.charts.push(data);
+      this.charts.push({ ...data });
     },
     updateCharts(charts: IChart[]) {
       this.charts = [...charts];
-    },
-    findCurrentChart(id = '') {
-      id = id || this.activeChart?.id || '';
-      if (id) {
-        return this.charts.find((item) => item.id === id) || null;
-      }
-
-      return null;
     },
     removeChart(chartId: string) {
       this.charts = this.charts.filter((item) => item.id !== chartId);

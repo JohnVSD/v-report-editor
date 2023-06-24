@@ -1,6 +1,6 @@
 <template>
   <section class="editor-workplace">
-    <Header @create-chart="createChart" @save="saveReport" />
+    <Header @create-chart="createChart" @save="saveReport" @exit="handleExit" />
     <!-- 内容区 -->
     <div class="editor-container">
       <div class="editor-main">
@@ -9,17 +9,22 @@
           :class="{
             'editor-report__active': activeChart?.id === 'report',
           }"
-          @click="selectReport"
+          @click="selectedReport"
         >
           <h3>{{ reportInfo?.name }}</h3>
         </div>
         <!-- 图表拖拽区 -->
-        <div class="editor-charts" @click.capture="selectChart">
+        <div
+          class="editor-charts"
+          @click.capture="selectedChart"
+          @Keydown="deleteChart"
+        >
           <grid-layout
             v-model:layout="charts"
-            :col-num="12"
+            :col-num="colNum"
             :row-height="1"
             :margin="[16, 16]"
+            :vertical-compact="true"
           >
             <grid-item
               v-for="item in charts"
@@ -44,18 +49,22 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, onUnmounted, computed, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { Message } from '@arco-design/web-vue';
 import { useEditorStore } from '@/store';
 import { getReportDetail, saveReportInfo } from '@/api/report';
-import ComponentInstance, {
-  ComponentBase,
-} from '@/components/editor/component-factory';
+import { getChartInstance } from '@/components/editor/component-factory';
 import ChartLayout from '@/components/chart-layout/index.vue';
 import Header from './components/editor-header.vue';
 import EditorSetting from './editor-setting/index.vue';
 
+const colNum = ref(12);
+watch(colNum, (val) => {
+  console.log('colNum changed to: ' + val);
+});
+
+const router = useRouter();
 const route = useRoute();
 const reportHash = route.params?.reportHash as string;
 
@@ -82,26 +91,23 @@ onUnmounted(() => {
 });
 
 const createChart = (type: string) => {
-  let entity: ComponentBase | null = null;
+  let entity = getChartInstance(type);
 
-  switch (type) {
-    case 'line':
-      entity = ComponentInstance['line'];
-      break;
-    case 'bar':
-      entity = ComponentInstance['bar'];
-      break;
-    case 'table':
-      entity = ComponentInstance['table'];
-      break;
-    default:
-      Message.warning('图表类型未找到' + type);
-      return false;
+  if (entity) {
+    // 动态添加防重叠算法
+    entity.x = (charts.value.length * 4) % (colNum.value || 12);
+    entity.y = charts.value.length + (colNum.value || 12);
+    entity.i = charts.value.length;
+    console.log(`${entity.name} 配置：`, [entity.x, entity.y, entity.i]);
+
+    editorStore.createChart(entity);
+    setActiveChart(entity);
   }
-  entity.i = charts.value.length;
+};
 
-  editorStore.createChart(entity);
-  setActiveChart(entity);
+const deleteChart = (e) => {
+  // ! 事件不生效，不知为何
+  console.log('按下按键：', e);
 };
 
 const saveReport = async () => {
@@ -110,7 +116,11 @@ const saveReport = async () => {
   Message.success('已保存');
 };
 
-const selectReport = () => {
+const handleExit = () => {
+  router.back();
+};
+
+const selectedReport = () => {
   setActiveChart({ id: 'report', type: 'report' });
 };
 
@@ -118,13 +128,12 @@ function setActiveChart(item: { id: string; type: string }) {
   editorStore.setActiveChart({ id: item.id, type: item.type });
 }
 
-function selectChart(event: any) {
-  console.log(event);
+function selectedChart(event: any) {
   const path = event.path as HTMLElement[];
   let targetIndex = -1;
 
   const isIncludeGrid = path.some((item, index) => {
-    if (!item.className) return false;
+    if (!item.className || typeof item.className !== 'string') return false;
 
     if (item.className.includes('vue-grid-item')) {
       targetIndex = index;
@@ -140,7 +149,7 @@ function selectChart(event: any) {
     ) as IChart;
     setActiveChart({ id, type });
   } else {
-    selectReport();
+    selectedReport();
   }
 }
 </script>

@@ -35,7 +35,7 @@
         <icon-save class="icon" />
         <p>保存</p>
       </li>
-      <li @click="exit">
+      <li @click="handleExit">
         <icon-export class="icon" />
         <p>退出</p>
       </li>
@@ -64,7 +64,7 @@ const save = () => {
   emit('save');
 };
 
-const exit = () => {
+const handleExit = () => {
   emit('exit');
 };
 </script>
