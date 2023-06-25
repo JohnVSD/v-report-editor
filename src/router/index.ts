@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 import Layout from '@/views/layout/index.vue';
 
+import Preview from '@/views/preview/index.vue';
 import MyReport from '@/views/my-report/index.vue';
 import ReportManage from '@/views/report-manage/index.vue';
 import ReportEditor from '@/views/editor/index.vue';
@@ -23,6 +24,9 @@ const router = createRouter({
       meta: {
         title: '我的报表',
         showInNav: true,
+      },
+      redirect: {
+        name: 'MyReportList',
       },
       children: [
         {
@@ -63,6 +67,11 @@ const router = createRouter({
       path: '/report-editor/:reportHash',
       name: 'ReportEditor',
       component: ReportEditor,
+    },
+    {
+      path: '/preview-report/:reportHash',
+      name: 'PreviewReport',
+      component: Preview,
     },
   ],
 });

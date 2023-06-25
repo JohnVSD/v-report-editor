@@ -25,7 +25,7 @@ import Menu from './components/menu.vue';
 
 const route = useRoute();
 const isMyReport = computed(() => {
-  return route.name === 'MyReport';
+  return route.name === 'MyReportList';
 });
 </script>
 

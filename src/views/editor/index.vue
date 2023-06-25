@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onUnmounted, computed, watch } from 'vue';
+import { ref, onUnmounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { Message } from '@arco-design/web-vue';
 import { useEditorStore } from '@/store';
@@ -60,9 +60,6 @@ import Header from './components/editor-header.vue';
 import EditorSetting from './editor-setting/index.vue';
 
 const colNum = ref(12);
-watch(colNum, (val) => {
-  console.log('colNum changed to: ' + val);
-});
 
 const router = useRouter();
 const route = useRoute();
@@ -79,12 +76,12 @@ const charts = computed(() => {
   return editorStore.charts;
 });
 
-async function reportDetail() {
+async function initCharts() {
   const { data } = await getReportDetail({ reportHash });
   const { charts = [], ...rest } = data;
   editorStore.init(rest, charts);
 }
-reportDetail();
+initCharts();
 
 onUnmounted(() => {
   editorStore.clearAll();

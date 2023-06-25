@@ -1,11 +1,9 @@
 <template>
-  <div class="demo-content1"> 我的报表 </div>
+  <Preview />
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import Preview from '../preview/index.vue';
+</script>
 
-<style lang="less" scoped>
-.demo-content1 {
-  color: blue;
-}
-</style>
+<style lang="less" scoped></style>

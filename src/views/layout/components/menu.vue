@@ -1,28 +1,52 @@
 <template>
   <!-- 后台数据渲染 -->
   <a-menu
-    :default-open-keys="['1']"
-    :default-selected-keys="['0_1']"
+    :default-selected-keys="[firstReport]"
     :style="{ width: '100%' }"
-    @menu-item-click="onClickMenuItem"
+    @menu-item-click="switchViews"
   >
-    <a-menu-item key="0_1">
-      周报
-    </a-menu-item>
-    <a-menu-item key="0_2">
-      月报
+    <a-menu-item v-for="item in reports" :key="item.hash">
+      {{ item.name }}
     </a-menu-item>
   </a-menu>
 </template>
 
 <script lang="ts" setup>
-import { Message } from '@arco-design/web-vue';
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { getReportList } from '@/api/report';
 
-function onClickMenuItem(key: string) {
-  Message.info({ content: `You select ${key}`, showIcon: true });
+const Router = useRouter();
+
+const reports = ref<IReport[]>([]);
+const firstReport = computed(() => {
+  if (reports.value.length) {
+    const { hash = '' } = reports.value[0] || {};
+    return hash;
+  }
+
+  return '';
+});
+
+initReports();
+async function initReports() {
+  const { data = [] } = await getReportList();
+  reports.value.push(...data);
+}
+
+watch(firstReport, (val) => {
+  if (val !== '') {
+    switchViews(val);
+  }
+});
+
+function switchViews(key: string) {
+  Router.replace({
+    query: {
+      anchor: key,
+    },
+  });
 }
 </script>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>
