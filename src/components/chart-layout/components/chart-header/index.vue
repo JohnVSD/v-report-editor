@@ -14,7 +14,7 @@
           <icon-more />
         </span>
         <template #content>
-          <a-doption value="delete">删除</a-doption>
+          <a-doption v-if="!hideDelBtn" value="delete">删除</a-doption>
         </template>
       </a-dropdown>
     </div>
@@ -28,10 +28,10 @@ defineProps({
     default: '啦啦啦',
   },
   remark: String,
+  hideDelBtn: Boolean,
 });
 
 const emit = defineEmits(['handleDropdown']);
-
 const handleDropdown = (value: any) => {
   emit('handleDropdown', value);
 };

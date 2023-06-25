@@ -3,6 +3,7 @@
     <ChartHeader
       :title="data.name"
       :remark="data.remark"
+      :hide-del-btn="!isEditor"
       @handle-dropdown="handleDropdown"
     />
     <div class="chart-body px-16">
@@ -29,6 +30,9 @@ const props = defineProps<{
 }>();
 
 const editorStore = useEditorStore();
+const isEditor = computed(() => {
+  return editorStore.isEditor;
+});
 const chartType = computed(() => props.data.type || '');
 const currentChart = computed(() => {
   switch (chartType.value) {

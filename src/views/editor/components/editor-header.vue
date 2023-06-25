@@ -27,7 +27,7 @@
     </ul>
     <!--  -->
     <ul class="right-side btn-group">
-      <li>
+      <li @click="saveAndPreview">
         <icon-eye class="icon" />
         <p>保存并预览</p>
       </li>
@@ -48,7 +48,7 @@ import { ref } from 'vue';
 import { IconFont } from '@/components/tools';
 import PluginList from './plugin-list';
 
-const emit = defineEmits(['createChart', 'save', 'exit']);
+const emit = defineEmits(['createChart', 'saveAndPreview', 'save', 'exit']);
 
 const avtivePlugin = ref('');
 
@@ -58,6 +58,10 @@ const togglePlugin = (plugin: any) => {
 
 const createChart = (type: string) => {
   emit('createChart', type);
+};
+
+const saveAndPreview = () => {
+  emit('saveAndPreview');
 };
 
 const save = () => {

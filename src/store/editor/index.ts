@@ -10,6 +10,7 @@ interface IEditor {
     id: string;
     type: string;
   } | null;
+  isEditor: boolean;
 }
 
 export const useEditorStore = defineStore('editor', {
@@ -21,6 +22,8 @@ export const useEditorStore = defineStore('editor', {
     initReport: null,
     // 其余部分
     activeChart: null, // 当前激活的对象
+    // 是否编辑模式
+    isEditor: false,
   }),
   getters: {
     getReport: (state) => state.report,
@@ -41,6 +44,9 @@ export const useEditorStore = defineStore('editor', {
     },
   },
   actions: {
+    setIsEditor(status: boolean) {
+      this.isEditor = status;
+    },
     /**
      * 已存在报表进行编辑时用到
      * * 使用接口请求到的数据进行初始化填充
@@ -80,6 +86,7 @@ export const useEditorStore = defineStore('editor', {
       this.initReport = null;
       this.initCharts = [];
       this.activeChart = null;
+      this.setIsEditor(false);
     },
   },
 });

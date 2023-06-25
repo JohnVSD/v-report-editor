@@ -3,5 +3,5 @@ import Mock from 'mockjs';
 import './report';
 
 Mock.setup({
-  timeout: '600-1000',
+  timeout: '200-800',
 });

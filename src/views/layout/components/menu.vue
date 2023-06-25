@@ -5,7 +5,11 @@
     :style="{ width: '100%' }"
     @menu-item-click="switchViews"
   >
-    <a-menu-item v-for="item in reports" :key="item.hash">
+    <a-menu-item
+      v-for="item in reports"
+      :key="item.hash"
+      :class="{ 'arco-menu-selected': item.hash === firstReport }"
+    >
       {{ item.name }}
     </a-menu-item>
   </a-menu>
@@ -36,6 +40,7 @@ async function initReports() {
 
 watch(firstReport, (val) => {
   if (val !== '') {
+    console.log('当前：', val);
     switchViews(val);
   }
 });

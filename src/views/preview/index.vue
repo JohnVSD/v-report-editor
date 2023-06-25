@@ -44,7 +44,12 @@ const charts = computed(() => {
 const route = useRoute();
 const reportHash = computed<string>(() => {
   const { anchor = '' } = route.query;
-  return anchor as string;
+  if (anchor) {
+    return anchor;
+  }
+
+  const { reportHash } = route.params;
+  return reportHash;
 });
 
 watch(
@@ -70,4 +75,9 @@ onUnmounted(() => {
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.preview-container {
+  height: 100vh;
+  background-color: var(--color-fill-2);
+}
+</style>

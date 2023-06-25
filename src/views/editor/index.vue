@@ -1,6 +1,11 @@
 <template>
   <section class="editor-workplace">
-    <Header @create-chart="createChart" @save="saveReport" @exit="handleExit" />
+    <Header
+      @create-chart="createChart"
+      @save-and-preview="saveAndPreview"
+      @save="saveReport"
+      @exit="handleExit"
+    />
     <!-- 内容区 -->
     <div class="editor-container">
       <div class="editor-main">
@@ -77,6 +82,8 @@ const charts = computed(() => {
 });
 
 async function initCharts() {
+  editorStore.setIsEditor(true);
+
   const { data } = await getReportDetail({ reportHash });
   const { charts = [], ...rest } = data;
   editorStore.init(rest, charts);
@@ -111,6 +118,11 @@ const saveReport = async () => {
   const { report, charts } = editorStore;
   await saveReportInfo({ report, charts });
   Message.success('已保存');
+};
+
+const saveAndPreview = async () => {
+  await saveReport();
+  router.push(`/preview-report/${reportHash}`);
 };
 
 const handleExit = () => {
