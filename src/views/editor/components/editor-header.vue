@@ -53,7 +53,11 @@ const emit = defineEmits(['createChart', 'saveAndPreview', 'save', 'exit']);
 const avtivePlugin = ref('');
 
 const togglePlugin = (plugin: any) => {
-  avtivePlugin.value = plugin.type;
+  if (avtivePlugin.value) {
+    avtivePlugin.value = '';
+  } else {
+    avtivePlugin.value = plugin.type;
+  }
 };
 
 const createChart = (type: string) => {

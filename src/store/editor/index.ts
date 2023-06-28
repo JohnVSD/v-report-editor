@@ -68,7 +68,8 @@ export const useEditorStore = defineStore('editor', {
     },
     // chart 操作
     createChart(data: IChart) {
-      this.charts.push({ ...data });
+      // ? this.charts.push(data); 此处 push 操作不会被父组件监听到
+      this.charts = [...this.charts, { ...data }];
     },
     updateCharts(charts: IChart[]) {
       this.charts = [...charts];

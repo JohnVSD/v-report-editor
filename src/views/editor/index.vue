@@ -19,11 +19,7 @@
           <h3>{{ reportInfo?.name }}</h3>
         </div>
         <!-- 图表拖拽区 -->
-        <div
-          class="editor-charts"
-          @click.capture="selectedChart"
-          @Keydown="deleteChart"
-        >
+        <div class="editor-charts" @click.capture="selectedChart">
           <grid-layout
             v-model:layout="charts"
             :col-num="colNum"
@@ -107,11 +103,6 @@ const createChart = (type: string) => {
     editorStore.createChart(entity);
     setActiveChart(entity);
   }
-};
-
-const deleteChart = (e) => {
-  // ! 事件不生效，不知为何
-  console.log('按下按键：', e);
 };
 
 const saveReport = async () => {

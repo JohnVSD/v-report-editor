@@ -1,5 +1,5 @@
 <template>
-  <section class="chart">
+  <section class="chart" :tabindex="data.i" @keydown.delete="deleteChart">
     <ChartHeader
       :title="data.name"
       :remark="data.remark"
@@ -62,12 +62,16 @@ const chartData = computed(() => {
 const handleDropdown = (value: string) => {
   switch (value) {
     case 'delete':
-      editorStore.removeChart(props.data.id);
+      deleteChart();
       break;
     default:
       break;
   }
 };
+
+function deleteChart() {
+  editorStore.removeChart(props.data.id);
+}
 </script>
 
 <style lang="less" scoped>
