@@ -1,5 +1,5 @@
 <template>
-  <a-button type="primary" @click="() => (visible = true)"> 新建 </a-button>
+  <a-button type="primary" @click="handleAdd"> 新建 </a-button>
   <!-- 新建报表弹框表单 -->
   <a-modal
     v-model:visible="visible"
@@ -29,6 +29,8 @@
 import { reactive, ref, defineEmits } from 'vue';
 import { Message } from '@arco-design/web-vue';
 import { createReport } from '@/api/report';
+import EventHub from '@/utils/event-hub';
+const emmitter = EventHub.getInstance();
 
 const visible = ref(false);
 const emit = defineEmits(['onCreateSuccess']);
@@ -36,6 +38,19 @@ const form = reactive({
   name: '',
   remark: '',
 });
+
+const handleAdd = () => {
+  emmitter.emit('event-test', { name: '新建报表' });
+  visible.value = true;
+
+  setTimeout(() => {
+    emmitter.emit('event-test', { name: '第二次发布' });
+    // console.log('事后监听...');
+    // emmitter.on('event-test', (data) => {
+    //   console.log('事后监听：', data);
+    // });
+  }, 4000);
+};
 
 const handleCancel = () => {
   visible.value = false;
